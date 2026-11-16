@@ -1,0 +1,14 @@
+{
+  "name": "memheal",
+  "displayName": "memheal",
+  "version": "0.1.0",
+  "description": "Tells a coding agent when it keeps repeating the same failing call, and reminds it at session start what you were working on. Local files only, no model calls, no network.",
+  "author": {
+    "name": "Andriy Kudelya",
+    "url": "https://memheal.com"
+  },
+  "homepage": "https://memheal.com",
+  "repository": "https://github.com/kuandriy/memheal",
+  "license": "MIT",
+  "keywords": ["memory", "hooks", "session", "recap", "loop", "local"]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "memheal",
+  "description": "The memheal plugin for Claude Code",
+  "owner": {
+    "name": "Andriy Kudelya",
+    "url": "https://memheal.com"
+  },
+  "plugins": [
+    {
+      "name": "memheal",
+      "source": "./plugin",
+      "description": "Tells a coding agent when it keeps repeating the same failing call, and reminds it at session start what you were working on. Local files only, no model calls, no network."
+    }
+  ]
+}
