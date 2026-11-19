@@ -89,8 +89,9 @@ Uninstalling the plugin deletes the data directory.
 Each prompt is reduced to its topic words. Common words and instruction verbs
 such as "add" and "fix" are dropped. The prompt joins the stored topic it is
 most similar to, or starts a new one. A topic's weight grows slowly each time
-you return to it and decays by about 70% per day untouched, so the record
-follows what you keep coming back to. When there are more than 24 topics, the
+you return to it and fades when you stop: a day untouched leaves about 80%
+of it, three days about half. A topic you worked on all week is not pushed
+out of Monday's recap by a few one-off prompts on Friday. When there are more than 24 topics, the
 weakest is dropped.
 
 For failures, the tool name, the call and the error lines that say what went

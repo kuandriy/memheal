@@ -95,8 +95,15 @@ Recording a prompt (`UserPromptSubmit`, prints nothing):
 8. Over 24 topics, the lowest score is removed. A topic untouched for 30 days
    is removed.
 
-Score: `log2(count + 1) * e^(-0.05 * hoursSinceLastPrompt)`. A day untouched
-leaves 30% of the weight.
+Score: `log2(count + 1) * e^(-0.01 * hoursSinceLastPrompt)`. A day untouched
+leaves 79% of the weight, three days about half.
+
+The rate was 0.05 per hour in the first version, which left 30% after a day.
+At that rate recency beat repetition: one throwaway prompt from Friday
+afternoon outranked four prompts from Wednesday, and four such prompts could
+push a topic worked on all week out of a four-topic recap. A recap is read at
+the start of a day, after a weekend or a break, so it decays on the scale of
+days. `test/focus.test.mjs` keeps a case for this.
 
 Showing the recap (`SessionStart`, sources `startup` and `compact`): the four
 strongest topics, two excerpts each, files, within 900 characters, introduced
@@ -163,7 +170,7 @@ words, grouped roughly, ordered by what you kept returning to.
 
 ## Tests
 
-`npm test` runs 63 tests with Node's built-in runner:
+`npm test` runs 64 tests with Node's built-in runner:
 
 | File | Covers |
 |---|---|

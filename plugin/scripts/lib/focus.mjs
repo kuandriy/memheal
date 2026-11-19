@@ -16,7 +16,7 @@ export const LIMITS = Object.freeze({
   snippetChars: 140, // length of one excerpt
   maxRefs: 5, // file paths kept per topic
   joinThreshold: 0.25, // cosine similarity needed to join an existing topic
-  decayPerHour: 0.05, // 24 hours untouched leaves 30% of the weight
+  decayPerHour: 0.01, // a day untouched leaves 79% of the weight, three days about half
   retentionDays: 30, // a topic untouched this long is deleted
   continueWithinMinutes: 120, // a wordless prompt ("yes") counts for the latest topic this long
   maxPromptChars: 2000, // only the start of a long prompt is read

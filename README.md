@@ -10,7 +10,7 @@ it. This file is for working on the repository.
 ## Status
 
 Version 0.1.0, not released yet. It passes Claude Code's plugin validator and
-63 automated tests, and Claude Code loads it. It has not yet been watched
+64 automated tests, and Claude Code loads it. It has not yet been watched
 through a full live session, so treat it as a preview.
 
 ## Layout
@@ -39,7 +39,7 @@ Needs Node.js 18 or newer.
 
 ```
 npm install        # TypeScript and Node types, for checking only
-npm test           # 63 tests
+npm test           # 64 tests
 npm run typecheck  # JSDoc types, strict
 ```
 

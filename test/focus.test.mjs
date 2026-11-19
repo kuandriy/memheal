@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { dropExpired, emptyState, LIMITS, normalizeState, ranked, recap, record, score } from "../plugin/scripts/lib/focus.mjs";
+import { dropExpired, emptyState, label, LIMITS, normalizeState, ranked, recap, record, score } from "../plugin/scripts/lib/focus.mjs";
 
 const HOUR = 3_600_000;
 const T0 = Date.UTC(2026, 10, 15, 9, 0, 0);
@@ -51,7 +51,7 @@ test("commands, empty prompts and tagged notices are not recorded", () => {
 test("score grows with revisits and decays with time", () => {
   const topic = { id: "t1", terms: {}, count: 1, first: T0, last: T0, snippets: [], refs: [] };
   assert.ok(Math.abs(score(topic, T0) - 1) < 1e-9);
-  assert.ok(Math.abs(score(topic, T0 + 24 * HOUR) - Math.exp(-1.2)) < 1e-9);
+  assert.ok(Math.abs(score(topic, T0 + 24 * HOUR) - Math.exp(-0.24)) < 1e-9);
   assert.ok(score({ ...topic, count: 7 }, T0) > score({ ...topic, count: 3 }, T0));
   // Revisited yesterday morning outranks mentioned once last night.
   const revisited = { ...topic, count: 10, last: T0 - 24 * HOUR };
@@ -127,6 +127,21 @@ test("recap never exceeds its limit however much is stored", () => {
   }
   const text = recap(state, T0 + HOUR);
   assert.ok(text.length > 0 && text.length <= LIMITS.recapChars, `length ${text.length}`);
+});
+
+test("a topic worked on for days is not pushed out of the recap by a few one-off prompts", () => {
+  const state = emptyState();
+  const sustained = ["add refresh token rotation", "the refresh token is not rotated on reuse",
+    "refresh token rotation breaks when two requests race", "write tests for refresh token rotation",
+    "add a lock around refresh token rotation"];
+  sustained.forEach((p, i) => record(state, p, ctx(T0 + i * HOUR)));
+  const oneOffs = ["update the build badge in the readme", "bump the eslint config version",
+    "rename the docker compose service", "fix a typo in the changelog heading"];
+  oneOffs.forEach((p, i) => record(state, p, ctx(T0 + 48 * HOUR + i * HOUR)));
+  assert.equal(state.topics.length, 1 + oneOffs.length, "the one-off prompts are separate topics");
+  const monday = T0 + 72 * HOUR;
+  assert.match(label(state, ranked(state, monday)[0]), /refresh/);
+  assert.match(recap(state, monday), /refresh/);
 });
 
 test("ranked orders by attention", () => {
